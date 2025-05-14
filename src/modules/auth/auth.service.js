@@ -1,21 +1,13 @@
-import { sequelize } from "../../../config/db.js";
+import { sequelize } from "../../config/db.js";
 
 export const findUser = async (where) => {
-  let query = `SELECT * FROM users`;
-  let replacements = {};
-
-  if (where.email) {
-    query += ` WHERE email = :email`;
-    replacements.email = where.email;
-  } else if (where.id) {
-    query += ` WHERE id = :id`;
-    replacements.id = where.id;
-  } else {
-    throw new Error("Either email or id is required to find user");
-  }
+  const query = `SELECT * FROM users WHERE (:email IS NULL OR email = :email) AND (:id IS NULL OR id = :id)`;
 
   const result = await sequelize.query(query, {
-    replacements,
+    replacements: {
+      email: where.email ?? null,
+      id: where.id ?? null,
+    },
     type: sequelize.QueryTypes.SELECT,
   });
 
@@ -25,20 +17,22 @@ export const findUser = async (where) => {
 export const insertUser = async (data) => {
   const now = new Date();
 
-  const query = `
-    INSERT INTO users (name, email, password, created_at, updated_at)
-    VALUES (:name, :email, :password, :created_at, :updated_at)
-  `;
+  // Add timestamps
+  data.created_at = now;
+  data.updated_at = now;
+
+  // Get keys and build columns/placeholders
+  const keys = Object.keys(data);
+  const columns = keys.join(', ');
+  const placeholders = keys.map(key => `:${key}`).join(', ');
+
+  const query = `INSERT INTO users (${columns}) VALUES (${placeholders})`;
 
   const result = await sequelize.query(query, {
-    replacements: {
-      name: data.name,
-      email: data.email,
-      password: data.password,
-      created_at: now,
-      updated_at: now,
-    },
+    replacements: data,
     type: sequelize.QueryTypes.INSERT,
   });
+
   return result;
 };
+

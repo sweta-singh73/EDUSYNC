@@ -1,11 +1,17 @@
 import express from "express";
-import { login, signup } from "../modules/auth/auth.controller.js";
+import {
+  deleteUser,
+  getUser,
+  updateUser,
+} from "./user.controller.js";
+
 
 const router = express.Router();
 
 // ======================== Auth Routes ========================
-router.post("/register", signup);
-router.post("/login", login);
+router.get("/get-user", getUser);
+router.put("/update-user", updateUser);
+router.delete("/delete-user", deleteUser);
 
 // ======================== Export ========================
 export default router;

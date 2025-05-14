@@ -4,14 +4,13 @@ import path from "path";
 import { fileURLToPath } from "url";
 import dotenv from "dotenv";
 dotenv.config();
-import { dbConnection } from "./config/db.js";
+import { dbConnection } from "./src/config/db.js";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
 // ROUTES
-import authRoutes from "./src/routes/auth.route.js";
-import userRoutes from "./src/routes/user.route.js";
+import routes from "./src/routes/centerllize.route.js";
 
 const app = express();
 
@@ -20,8 +19,8 @@ dbConnection();
 app.use(express.json());
 app.use("/uploads", express.static(path.join(__dirname, "uploads")));
 
-app.use("/api/auth", authRoutes);
-app.use("/api/user", userRoutes);
+app.use("/api", routes);
+
 
 const PORT = 4000;
 app.listen(PORT, () => {

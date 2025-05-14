@@ -3,14 +3,8 @@ import { deleteUserById, updateUserById } from "./user.service.js";
 
 export const getUser = async (req, res) => {
   try {
-    console.log("req.user:", req.user);
 
-    const userId = req.user?.id;
-    console.log("userId:", userId);
-
-    if (!userId) {
-      return res.status(400).json({ error: "User ID not found in request" });
-    }
+    const userId = req.user.id;
 
     const user = await findUser({ id: userId });
 

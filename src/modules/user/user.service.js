@@ -1,4 +1,4 @@
-import { sequelize } from "../../../config/db.js";
+import { sequelize } from "../../config/db.js";
 
 //update user by id
 export const updateUserById = async (where, data) => {

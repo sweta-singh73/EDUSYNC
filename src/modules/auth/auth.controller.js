@@ -1,7 +1,9 @@
 import bcrypt from "bcrypt";
-import securePassword from "../../../utils/bcryptPassword.js";
+
 import { findUser, insertUser } from "./auth.service.js";
-import generateToken from "../../../utils/generateToken.js";
+import securePassword from "../../utils/bcryptPassword.js";
+import generateToken from "../../utils/generateToken.js";
+
 
 export const signup = async (req, res) => {
   try {
