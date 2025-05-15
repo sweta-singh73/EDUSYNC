@@ -4,13 +4,9 @@ import { findUser, insertUser } from "./auth.service.js";
 import securePassword from "../../utils/bcryptPassword.js";
 import generateToken from "../../utils/generateToken.js";
 
-
 export const signup = async (req, res) => {
   try {
     const { name, email, password } = req.body;
-
-    if (!name || !email || !password)
-      return res.status(400).json({ error: "All fields are required!" });
 
     const existUser = await findUser({ email });
 
@@ -32,11 +28,6 @@ export const signup = async (req, res) => {
 export const login = async (req, res) => {
   try {
     const { email, password } = req.body;
-
-    if (!email || !password)
-      return res
-        .status(400)
-        .json({ error: "Email and password are required!" });
 
     const user = await findUser({ email });
 

@@ -1,4 +1,8 @@
-import { validateEmail, validatePassword, validateName } from "../validations/user.validation.js";
+import {
+  validateEmail,
+  validateName,
+  validatePassword,
+} from "../validations/validation.js";
 
 export const validateRequest = (schema) => (req, res, next) => {
   const { name, email, password } = req.body;
@@ -7,7 +11,9 @@ export const validateRequest = (schema) => (req, res, next) => {
 
   // Validate Name
   if (name && !validateName(name)) {
-    errors.push("Name should be between 3 to 30 characters and contain only alphabets.");
+    errors.push(
+      "Name should be between 3 to 30 characters and contain only alphabets."
+    );
   }
 
   // Validate Email
@@ -17,7 +23,9 @@ export const validateRequest = (schema) => (req, res, next) => {
 
   // Validate Password
   if (password && !validatePassword(password)) {
-    errors.push("Password must have at least 6 characters, one uppercase, one number, and one special character.");
+    errors.push(
+      "Password must have at least 6 characters, one uppercase, one number, and one special character."
+    );
   }
 
   if (errors.length) {

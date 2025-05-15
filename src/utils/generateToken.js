@@ -1,5 +1,6 @@
 import JWT from "jsonwebtoken";
 
+
 // ========================  Create Token ========================
 
 const generateToken = async (id) => {

@@ -1,6 +1,5 @@
 import { DataTypes } from "sequelize";
 import { sequelize } from "../config/db.js";
-import User from "./User.js";
 
 const Post = sequelize.define(
   "Post",
@@ -29,6 +28,7 @@ const Post = sequelize.define(
       type: DataTypes.TEXT,
       allowNull: false,
     },
+    
   },
   {
     timestamps: true,

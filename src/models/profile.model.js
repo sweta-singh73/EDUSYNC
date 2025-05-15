@@ -1,6 +1,5 @@
 import { DataTypes } from "sequelize";
 import { sequelize } from "../config/db.js";
-import User from "./User.js";
 
 const Profile = sequelize.define(
   "Profile",
@@ -19,7 +18,7 @@ const Profile = sequelize.define(
         key: "id",
       },
     },
-    profile_Pic: {
+    profilePic: {
       type: DataTypes.STRING,
       allowNull: false,
     },
@@ -31,16 +30,12 @@ const Profile = sequelize.define(
       type: DataTypes.STRING(200),
       allowNull: false,
     },
-    deleted_at: {
-      type: DataTypes.DATE,
-      allowNull: true,  
-    },
   },
   {
     timestamps: true,
     tableName: "profiles",
     underscored: true,
-    paranoid: true, 
+    paranoid: true,
   }
 );
 

@@ -1,5 +1,6 @@
 import { sequelize } from "../../config/db.js";
 
+//Find User
 export const findUser = async (where) => {
   const query = `SELECT * FROM users WHERE (:email IS NULL OR email = :email) AND (:id IS NULL OR id = :id)`;
 
@@ -14,17 +15,15 @@ export const findUser = async (where) => {
   return result[0] || null;
 };
 
+//Insert New User
 export const insertUser = async (data) => {
   const now = new Date();
-
-  // Add timestamps
   data.created_at = now;
   data.updated_at = now;
 
-  // Get keys and build columns/placeholders
   const keys = Object.keys(data);
-  const columns = keys.join(', ');
-  const placeholders = keys.map(key => `:${key}`).join(', ');
+  const columns = keys.join(", ");
+  const placeholders = keys.map((key) => `:${key}`).join(", ");
 
   const query = `INSERT INTO users (${columns}) VALUES (${placeholders})`;
 
@@ -35,4 +34,3 @@ export const insertUser = async (data) => {
 
   return result;
 };
-

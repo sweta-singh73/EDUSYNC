@@ -1,11 +1,7 @@
 import { sequelize } from "../../config/db.js";
 
-//update user by id
+// Update user by ID
 export const updateUserById = async (where, data) => {
-  if (!where?.id) {
-    throw new Error("User ID is required to update a user");
-  }
-
   const setClause = Object.keys(data)
     .map((key) => `${key} = :${key}`)
     .join(", ");
@@ -22,12 +18,8 @@ export const updateUserById = async (where, data) => {
   return result;
 };
 
-//delete user by id
+// Delete user by ID
 export const deleteUserById = async (where) => {
-  if (!where?.id) {
-    throw new Error("User ID is required for deletion");
-  }
-
   const query = `DELETE FROM users WHERE id = :id`;
 
   await sequelize.query(query, {
@@ -36,4 +28,23 @@ export const deleteUserById = async (where) => {
   });
 
   return true;
+};
+
+// Find all users excluding password field
+export const findUsers = async () => {
+  const columnsResult = await sequelize.query(
+    `SELECT column_name FROM information_schema.columns 
+     WHERE table_name = 'users' AND column_name != 'password'`,
+    { type: sequelize.QueryTypes.SELECT }
+  );
+
+  const columns = columnsResult.map((col) => `"${col.column_name}"`).join(", ");
+
+  const query = `SELECT ${columns} FROM users`;
+
+  const result = await sequelize.query(query, {
+    type: sequelize.QueryTypes.SELECT,
+  });
+
+  return result;
 };

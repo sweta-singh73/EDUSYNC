@@ -1,18 +1,18 @@
 import { findUser } from "../auth/auth.service.js";
-import { deleteUserById, updateUserById } from "./user.service.js";
+import { deleteUserById, findUsers, updateUserById } from "./user.service.js";
 
+// Get current logged-in user details
 export const getUser = async (req, res) => {
+  const userId = req.user.id;
+
   try {
-
-    const userId = req.user.id;
-
     const user = await findUser({ id: userId });
 
     if (!user) {
       return res.status(404).json({ error: "User not found!" });
     }
 
-    res.status(200).json({
+    return res.status(200).json({
       message: "User fetched successfully",
       data: user,
     });
@@ -21,12 +21,12 @@ export const getUser = async (req, res) => {
   }
 };
 
-//update user
+// Update current logged-in user
 export const updateUser = async (req, res) => {
   const userId = req.user.id;
-  try {
-    const updateData = req.body;
+  const updateData = req.body;
 
+  try {
     await updateUserById({ id: userId }, updateData);
 
     return res.status(200).json({
@@ -37,24 +37,35 @@ export const updateUser = async (req, res) => {
   }
 };
 
-//delete user
+// Delete current logged-in user
 export const deleteUser = async (req, res) => {
-  try {
-    const userId = req.user.id;
+  const userId = req.user.id;
 
+  try {
     await deleteUserById({ id: userId });
-    return res.status(200).json({ message: "User deleted successfully!" });
+
+    return res.status(200).json({
+      message: "User deleted successfully!",
+    });
   } catch (error) {
     return res.status(500).json({ error: error.message });
   }
 };
 
-//get all user
-
-const getUsers = async (req, res) => {
+// Get all users (admin access assumed)
+export const getUsers = async (req, res) => {
   try {
-    
+    const users = await findUsers();
+
+    if (!users || users.length === 0) {
+      return res.status(404).json({ error: "No users found!" });
+    }
+
+    return res.status(200).json({
+      message: "Users fetched successfully!",
+      data: users,
+    });
   } catch (error) {
-    return res.status(500).json({error: error.message});
+    return res.status(500).json({ error: error.message });
   }
-}
+};
