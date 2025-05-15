@@ -28,7 +28,10 @@ const Post = sequelize.define(
       type: DataTypes.TEXT,
       allowNull: false,
     },
-    
+    isDeleted: {
+      type: DataTypes.BOOLEAN,
+      defaultValue: false,
+    },
   },
   {
     timestamps: true,

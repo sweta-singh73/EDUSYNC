@@ -27,6 +27,10 @@ export async function up(queryInterface, Sequelize) {
       type: Sequelize.TEXT,
       allowNull: false,
     },
+    is_deleted: {
+      type: Sequelize.BOOLEAN,
+      defaultValue: false,
+    },
     deleted_at: {
       type: Sequelize.DATE,
       allowNull: true,

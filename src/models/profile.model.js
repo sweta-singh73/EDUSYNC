@@ -30,6 +30,10 @@ const Profile = sequelize.define(
       type: DataTypes.STRING(200),
       allowNull: false,
     },
+    isDeleted: {
+      type: DataTypes.BOOLEAN,
+      defaultValue: false,
+    },
   },
   {
     timestamps: true,

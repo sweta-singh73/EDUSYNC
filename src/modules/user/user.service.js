@@ -32,19 +32,9 @@ export const deleteUserById = async (where) => {
 
 // Find all users excluding password field
 export const findUsers = async () => {
-  const columnsResult = await sequelize.query(
-    `SELECT column_name FROM information_schema.columns 
-     WHERE table_name = 'users' AND column_name != 'password'`,
-    { type: sequelize.QueryTypes.SELECT }
-  );
-
-  const columns = columnsResult.map((col) => `"${col.column_name}"`).join(", ");
-
-  const query = `SELECT ${columns} FROM users`;
-
+  const query = `SELECT  id, name, email FROM users`;
   const result = await sequelize.query(query, {
     type: sequelize.QueryTypes.SELECT,
   });
-
   return result;
 };

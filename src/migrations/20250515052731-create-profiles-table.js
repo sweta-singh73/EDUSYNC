@@ -31,6 +31,11 @@ export async function up(queryInterface, Sequelize) {
       type: Sequelize.STRING(200),
       allowNull: false,
     },
+    is_deleted: {
+      type: Sequelize.BOOLEAN,
+      defaultValue: false,
+    },
+   
     deleted_at: {
       allowNull: true,
       type: Sequelize.DATE,
