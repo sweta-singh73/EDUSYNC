@@ -21,27 +21,25 @@ export const insertProfile = async (data) => {
 };
 
 //delete profile
-export const  deleteProfileById = async (where) => {
+export const deleteProfileById = async (where) => {
   const query = `
   UPDATE profiles 
   SET deleted_at = NOW(), is_deleted = true 
   WHERE id = :id
 `;
 
-const result = await sequelize.query(query, {
-  replacements: {id: where.id},
-  type: sequelize.QueryTypes.DELETE
-});
-return result;
+  const result = await sequelize.query(query, {
+    replacements: { id: where.id },
+    type: sequelize.QueryTypes.DELETE,
+  });
+  return result;
+};
 
-}
-
-//find profile 
+//find profile
 export const findProfile = async (where) => {
-const query = `SELECT * FROM profiles WHERE id = :id`;
-const result = await sequelize.query(query, {
-  replacements: {id: where.id}
-});
-return result[0];
-}
-
+  const query = `SELECT * FROM profiles WHERE id = :id AND is_deleted = false`;
+  const result = await sequelize.query(query, {
+    replacements: { id: where.id },
+  });
+  return result[0];
+};

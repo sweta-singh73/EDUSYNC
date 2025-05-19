@@ -1,5 +1,10 @@
 import { findUser } from "../auth/auth.service.js";
-import { deleteUserById, findUsers, updateUserById } from "./user.service.js";
+import {
+  deleteUserById,
+  findAllInfo,
+  findUsers,
+  updateUserById,
+} from "./user.service.js";
 
 // Get current logged-in user details
 export const getUser = async (req, res) => {
@@ -69,3 +74,18 @@ export const getUsers = async (req, res) => {
     return res.status(500).json({ error: error.message });
   }
 };
+
+//get api to fetch user details , post details and profile details
+
+export const getAllData = async (req, res) => {
+  const userId = req.user.id;
+  try {
+    const userAllDetails = await findAllInfo({userId});
+    res.status(200).json({message: "details fetch successfully", data: userAllDetails});
+  } catch (error) {
+   return res.status(500).json({error: error.message}); 
+  }
+    }
+
+  
+
