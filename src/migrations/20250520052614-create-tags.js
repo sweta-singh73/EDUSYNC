@@ -5,10 +5,9 @@ export default {
   async up(queryInterface, Sequelize) {
     await queryInterface.createTable("tags", {
       id: {
-        type: Sequelize.INTEGER,
+        type: Sequelize.UUID,
+        defaultValue: Sequelize.UUIDV4,
         primaryKey: true,
-        autoIncrement: true,
-        allowNull: false,
       },
       title: {
         type: Sequelize.STRING(200),

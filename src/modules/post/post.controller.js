@@ -1,7 +1,6 @@
 import {
   deletePostById,
   findPost,
-  findPosts,
   insertPost,
   updatePostById,
 } from "./post.service.js";
@@ -10,11 +9,11 @@ import {
 export const createPost = async (req, res) => {
   const userId = req.user.id;
   try {
-    const { tagId, title, content } = req.body;
+    let { tagIds, title, content } = req.body;
 
     const newPost = await insertPost({
       user_id: userId,
-      tag_id: tagId,
+      tag_ids: tagIds,
       title,
       content,
     });
@@ -82,7 +81,7 @@ export const getPost = async (req, res) => {
 export const getPosts = async (req, res) => {
   const user_id = req.user.id;
   try {
-    const posts = await findPosts();
+    const posts = await findPost();
     if (!posts) {
       return res.status(400).json({ error: "Posts not found!" });
     }

@@ -8,7 +8,7 @@ dotenv.config();
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-import routes from "./routes/centerllize.route.js";
+import routes from "./routes.js";
 
 const app = express();
 

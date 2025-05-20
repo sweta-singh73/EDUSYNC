@@ -4,9 +4,8 @@
 export async function up(queryInterface, Sequelize) {
   await queryInterface.createTable("posts", {
     id: {
-      type: Sequelize.INTEGER,
-      allowNull: false,
-      autoIncrement: true,
+      type: Sequelize.UUID,
+      defaultValue: Sequelize.UUIDV4,
       primaryKey: true,
     },
     user_id: {
@@ -20,15 +19,16 @@ export async function up(queryInterface, Sequelize) {
       onUpdate: "CASCADE",
     },
 
-    tag_id: {
-      type: Sequelize.INTEGER,
+    tag_ids: {
+      type: Sequelize.ARRAY(Sequelize.INTEGER), // array of integers
       allowNull: false,
-      references: {
-        model: "tags",
-        key: "id",
-      },
-      onDelete: "CASCADE",
-      onUpdate: "CASCADE",
+      // Remove foreign key references here — Postgres doesn’t support FK on arrays
+      // references: {
+      //   model: "tags",
+      //   key: "id",
+      // },
+      // onDelete: "CASCADE",
+      // onUpdate: "CASCADE",
     },
     title: {
       type: Sequelize.STRING(255),

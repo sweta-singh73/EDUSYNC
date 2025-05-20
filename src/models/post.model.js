@@ -3,23 +3,22 @@ export default (sequelize, DataTypes) => {
     "Post",
     {
       id: {
-        type: DataTypes.INTEGER,
+        type: DataTypes.UUID,
+        defaultValue: DataTypes.UUIDV4,
         primaryKey: true,
-        autoIncrement: true,
-        allowNull: false,
       },
       userId: {
         type: DataTypes.INTEGER,
         allowNull: false,
         references: {
-          model: "users", 
+          model: "users",
           key: "id",
         },
         onDelete: "CASCADE",
         onUpdate: "CASCADE",
       },
-      tagId: {
-        type: DataTypes.INTEGER,
+      tagIds: {
+        type: DataTypes.ARRAY(DataTypes.INTEGER),
         allowNull: false,
         references: {
           model: "tags",

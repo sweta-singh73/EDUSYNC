@@ -4,9 +4,8 @@
 export async function up(queryInterface, Sequelize) {
   await queryInterface.createTable("profiles", {
     id: {
-      type: Sequelize.INTEGER,
-      allowNull: false,
-      autoIncrement: true,
+      type: Sequelize.UUID,
+      defaultValue: Sequelize.UUIDV4,
       primaryKey: true,
     },
     user_id: {
