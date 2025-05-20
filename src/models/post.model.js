@@ -1,43 +1,57 @@
-import { DataTypes } from "sequelize";
-import { sequelize } from "../config/db.js";
-
-const Post = sequelize.define(
-  "Post",
-  {
-    id: {
-      type: DataTypes.INTEGER,
-      primaryKey: true,
-      autoIncrement: true,
-      allowNull: false,
-    },
-    userId: {
-      type: DataTypes.INTEGER,
-      allowNull: false,
-      references: {
-        model: User,
-        key: "id",
+export default (sequelize, DataTypes) => {
+  const Post = sequelize.define(
+    "Post",
+    {
+      id: {
+        type: DataTypes.INTEGER,
+        primaryKey: true,
+        autoIncrement: true,
+        allowNull: false,
       },
-      onDelete: "CASCADE",
-      onUpdate: "CASCADE",
+      userId: {
+        type: DataTypes.INTEGER,
+        allowNull: false,
+        references: {
+          model: "users", 
+          key: "id",
+        },
+        onDelete: "CASCADE",
+        onUpdate: "CASCADE",
+      },
+      tagId: {
+        type: DataTypes.INTEGER,
+        allowNull: false,
+        references: {
+          model: "tags",
+          key: "id",
+        },
+        onDelete: "CASCADE",
+        onUpdate: "CASCADE",
+      },
+      title: {
+        type: DataTypes.STRING(255),
+        allowNull: false,
+      },
+      content: {
+        type: DataTypes.TEXT,
+        allowNull: false,
+      },
+      isDeleted: {
+        type: DataTypes.BOOLEAN,
+        defaultValue: false,
+      },
     },
-    title: {
-      type: DataTypes.STRING(255),
-      allowNull: false,
-    },
-    content: {
-      type: DataTypes.TEXT,
-      allowNull: false,
-    },
-    isDeleted: {
-      type: DataTypes.BOOLEAN,
-      defaultValue: false,
-    },
-  },
-  {
-    timestamps: true,
-    tableName: "posts",
-    underscored: true,
-  }
-);
+    {
+      timestamps: true,
+      tableName: "posts",
+      underscored: true,
+    }
+  );
 
-export default Post;
+  Post.associate = (models) => {
+    Post.belongsTo(models.User, { foreignKey: "userId" });
+    Post.belongsTo(models.Tag, { foreignKey: "tagId" });
+  };
+
+  return Post;
+};

@@ -19,6 +19,17 @@ export async function up(queryInterface, Sequelize) {
       onDelete: "CASCADE",
       onUpdate: "CASCADE",
     },
+
+    tag_id: {
+      type: Sequelize.INTEGER,
+      allowNull: false,
+      references: {
+        model: "tags",
+        key: "id",
+      },
+      onDelete: "CASCADE",
+      onUpdate: "CASCADE",
+    },
     title: {
       type: Sequelize.STRING(255),
       allowNull: false,

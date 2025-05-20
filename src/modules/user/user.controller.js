@@ -1,7 +1,7 @@
 import { findUser } from "../auth/auth.service.js";
 import {
   deleteUserById,
-  findAllInfo,
+  findUserInfoById,
   findUsers,
   updateUserById,
 } from "./user.service.js";
@@ -80,12 +80,11 @@ export const getUsers = async (req, res) => {
 export const getAllData = async (req, res) => {
   const userId = req.user.id;
   try {
-    const userAllDetails = await findAllInfo({userId});
-    res.status(200).json({message: "details fetch successfully", data: userAllDetails});
+    const userAllDetails = await findUserInfoById({ userId });
+    res
+      .status(200)
+      .json({ message: "details fetch successfully", data: userAllDetails });
   } catch (error) {
-   return res.status(500).json({error: error.message}); 
+    return res.status(500).json({ error: error.message });
   }
-    }
-
-  
-
+};

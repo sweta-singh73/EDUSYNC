@@ -10,10 +10,11 @@ import {
 export const createPost = async (req, res) => {
   const userId = req.user.id;
   try {
-    const { title, content } = req.body;
+    const { tagId, title, content } = req.body;
 
     const newPost = await insertPost({
       user_id: userId,
+      tag_id: tagId,
       title,
       content,
     });
@@ -81,7 +82,7 @@ export const getPost = async (req, res) => {
 export const getPosts = async (req, res) => {
   const user_id = req.user.id;
   try {
-    const posts = await findPosts({ user_id });
+    const posts = await findPosts();
     if (!posts) {
       return res.status(400).json({ error: "Posts not found!" });
     }

@@ -1,4 +1,6 @@
-import { sequelize } from "../../config/db.js";
+import db from "../../models/index.js";
+import { QueryTypes } from "sequelize";
+const { sequelize } = db;
 
 //Find User
 export const findUser = async (where) => {
@@ -9,7 +11,7 @@ export const findUser = async (where) => {
       email: where.email ?? null,
       id: where.id ?? null,
     },
-    type: sequelize.QueryTypes.SELECT,
+    type: QueryTypes.SELECT,
   });
 
   return result[0] || null;
@@ -29,7 +31,7 @@ export const insertUser = async (data) => {
 
   const result = await sequelize.query(query, {
     replacements: data,
-    type: sequelize.QueryTypes.INSERT,
+    type: QueryTypes.INSERT,
   });
 
   return result;

@@ -4,7 +4,6 @@ import path from "path";
 import { fileURLToPath } from "url";
 import dotenv from "dotenv";
 dotenv.config();
-import { dbConnection } from "./config/db.js";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -12,8 +11,6 @@ const __dirname = path.dirname(__filename);
 import routes from "./routes/centerllize.route.js";
 
 const app = express();
-
-dbConnection();
 
 app.use(express.json());
 app.use("/uploads", express.static(path.join(__dirname, "/uploads")));

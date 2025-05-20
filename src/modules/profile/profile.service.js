@@ -1,4 +1,6 @@
-import { sequelize } from "../../config/db.js";
+import db from "../../models/index.js";
+import { QueryTypes } from "sequelize";
+const { sequelize } = db;
 
 export const insertProfile = async (data) => {
   const columns = Object.keys(data).join(", ");
@@ -14,7 +16,7 @@ export const insertProfile = async (data) => {
 
   const result = await sequelize.query(query, {
     replacements: data,
-    type: sequelize.QueryTypes.INSERT,
+    type: QueryTypes.INSERT,
   });
 
   return result[0];
@@ -30,7 +32,7 @@ export const deleteProfileById = async (where) => {
 
   const result = await sequelize.query(query, {
     replacements: { id: where.id },
-    type: sequelize.QueryTypes.DELETE,
+    type: QueryTypes.DELETE,
   });
   return result;
 };

@@ -1,4 +1,6 @@
-import { sequelize } from "../../config/db.js";
+import db from "../../models/index.js";
+import { QueryTypes } from "sequelize";
+const { sequelize } = db;
 
 // Update user by ID
 export const updateUserById = async (where, data) => {
@@ -12,7 +14,7 @@ export const updateUserById = async (where, data) => {
 
   const [result] = await sequelize.query(query, {
     replacements,
-    type: sequelize.QueryTypes.UPDATE,
+    type: QueryTypes.UPDATE,
   });
 
   return result;
@@ -24,7 +26,7 @@ export const deleteUserById = async (where) => {
 
   await sequelize.query(query, {
     replacements: { id: where.id },
-    type: sequelize.QueryTypes.DELETE,
+    type: QueryTypes.DELETE,
   });
 
   return true;
@@ -34,13 +36,13 @@ export const deleteUserById = async (where) => {
 export const findUsers = async () => {
   const query = `SELECT  id, name, email FROM users`;
   const result = await sequelize.query(query, {
-    type: sequelize.QueryTypes.SELECT,
+    type: QueryTypes.SELECT,
   });
   return result;
 };
 
-//find all information
-export const findAllInfo = async ({ userId } = {}) => {
+// //find user info by id
+export const findUserInfoById = async ({ userId } = {}) => {
   let condition = "";
   let replacements = {};
 
@@ -50,7 +52,7 @@ export const findAllInfo = async ({ userId } = {}) => {
   }
 
   const query = `
-    SELECT 
+    SELECT
       u.id AS user_id,
       u.name AS user_name,
       u.email AS user_email,
@@ -77,7 +79,7 @@ export const findAllInfo = async ({ userId } = {}) => {
 
   const result = await sequelize.query(query, {
     replacements,
-    type: sequelize.QueryTypes.SELECT,
+    type: QueryTypes.SELECT,
     logging: console.log,
   });
 
@@ -86,3 +88,6 @@ export const findAllInfo = async ({ userId } = {}) => {
     data: result.length > 0 ? result : null,
   };
 };
+
+//find all user info
+export const userAllInfo = async () => {};

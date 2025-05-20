@@ -1,4 +1,6 @@
-import { sequelize } from "../../config/db.js";
+import db from "../../models/index.js";
+import { QueryTypes } from "sequelize";
+const { sequelize } = db;
 
 //insert
 export const insertPost = async (data) => {
@@ -15,7 +17,7 @@ export const insertPost = async (data) => {
 
   const [result] = await sequelize.query(query, {
     replacements: data,
-    type: sequelize.QueryTypes.INSERT,
+    type: QueryTypes.INSERT,
   });
 
   return result;
@@ -33,7 +35,7 @@ export const deletePostById = async (where) => {
     replacements: {
       id: where.id,
     },
-    type: sequelize.QueryTypes.UPDATE,
+    type: QueryTypes.UPDATE,
   });
 
   return result;
@@ -44,38 +46,64 @@ export const updatePostById = async (where, updatedata) => {
   const setClause = Object.keys(updatedata)
     .map((key) => `${key} = :${key}`)
     .join(", ");
-  
+
   const query = `UPDATE posts SET ${setClause} WHERE id = :id`;
-  
+
   const replacements = { ...updatedata, id: where.id };
-  
+
   const result = await sequelize.query(query, {
     replacements,
-    type: sequelize.QueryTypes.UPDATE,
+    type: QueryTypes.UPDATE,
   });
-  
+
   return result;
 };
 
-//find single post 
+//find single post
 export const findPost = async (where) => {
-  const query = `SELECT * FROM posts WHERE id = :id AND is_deleted = false`;
-const result = await sequelize.query(query, {
-  replacements: {id: where.id},
-  type: sequelize.QueryTypes.SELECT
-});
-return result[0];
-}
-
-//find all post 
-export const findPosts = async (where) => {
   const query = `
-    SELECT * FROM posts 
-    WHERE user_id = :user_id AND is_deleted = false
+    SELECT 
+      posts.id,
+      posts.title,
+      posts.content,
+      JSON_BUILD_OBJECT(
+        'id', tags.id,
+        'title', tags.title
+      ) AS tag_details
+    FROM posts
+    JOIN tags ON posts.tag_id = tags.id
+    WHERE posts.id = :id
+      AND posts.is_deleted = false
+      AND tags.is_deleted = false
   `;
-const result = await sequelize.query(query, {
-  replacements: {user_id: where.user_id},
-  type: sequelize.QueryTypes.SELECT
-});
-return result;
-}
+
+  const result = await sequelize.query(query, {
+    replacements: { id: where.id },
+    type: sequelize.QueryTypes.SELECT,
+  });
+
+  return result[0];
+};
+
+export const findPosts = async () => {
+  const query = `
+    SELECT 
+      posts.id,
+      posts.title,
+      posts.content,
+      JSON_BUILD_OBJECT(
+        'id', tags.id,
+        'title', tags.title
+      ) AS tag_details
+    FROM posts
+    JOIN tags ON posts.tag_id = tags.id
+    WHERE posts.is_deleted = false
+      AND tags.is_deleted = false
+  `;
+
+  const result = await sequelize.query(query, {
+    type: sequelize.QueryTypes.SELECT,
+  });
+
+  return result;
+};
